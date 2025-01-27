@@ -25,67 +25,61 @@ class TestPet:
             assert new_pet.json()['name'] == 'Spike'
         validate_response_to_json_schema(json_schema='post_pet.json', response=new_pet)
 
+    @allure.title('Find pet by ID')
+    @allure.story('Return pet')
+    @allure.tag('web')
+    @allure.severity(Severity.CRITICAL)
+    @allure.label('owner', 'Denis')
+    def test_find_pet_by_id(self, api_url):
+        new_pet = create_new_pet(api_url, pet_name='Miky')
 
-@allure.title('Find pet by ID')
+        response = get_pet_by_id(api_url, new_pet)
 
+        with allure.step('Проверка, что API возвращает код статуса 200.'):
+            assert response.status_code == 200
+        with allure.step('Проверка, что у найденного питомца имя - "Miky".'):
+            assert response.json()['name'] == 'Miky'
+        validate_response_to_json_schema(json_schema='get_pet.json', response=response)
 
-@allure.story('Return pet')
-@allure.tag('web')
-@allure.severity(Severity.CRITICAL)
-@allure.label('owner', 'Denis')
-def test_find_pet_by_id(self, api_url):
-    new_pet = create_new_pet(api_url, pet_name='Miky')
+    @allure.title('Search of non-existent pet')
+    @allure.story('Return pet')
+    @allure.tag('web')
+    @allure.severity(Severity.NORMAL)
+    @allure.label('owner', 'Denis')
+    def test_dont_find_pet_by_id(self, api_url):
+        response = get_nonexistent_pet_by_id(api_url, pet_id=111222)
 
-    response = get_pet_by_id(api_url, new_pet)
+        with allure.step('Проверка, что API возвращает код статуса 404.'):
+            assert response.status_code == 404
+        with allure.step('Проверка, что в ответе содержится сообщение "Pet not found".'):
+            assert response.json()['message'] == 'Pet not found'
+        validate_response_to_json_schema(json_schema='get_nonexistent_pet.json', response=response)
 
-    with allure.step('Проверка, что API возвращает код статуса 200.'):
-        assert response.status_code == 200
-    with allure.step('Проверка, что у найденного питомца имя - "Miky".'):
-        assert response.json()['name'] == 'Miky'
-    validate_response_to_json_schema(json_schema='get_pet.json', response=response)
+    @allure.title('Find all pets with status "pending"')
+    @allure.story('Return pet')
+    @allure.tag('web')
+    @allure.severity(Severity.NORMAL)
+    @allure.label('owner', 'Denis')
+    def test_find_all_pets_with_pending_status(self, api_url):
+        response = get_pet_by_status(api_url, status='pending')
 
+        with allure.step('Проверка, что API возвращает код статуса 200.'):
+            assert response.status_code == 200
+        with allure.step('Проверка, что статус первого питомца в ответе - "pending".'):
+            assert response.json()[0]['status'] == 'pending'
 
-@allure.title('Search of non-existent pet')
-@allure.story('Return pet')
-@allure.tag('web')
-@allure.severity(Severity.NORMAL)
-@allure.label('owner', 'Denis')
-def test_dont_find_pet_by_id(self, api_url):
-    response = get_nonexistent_pet_by_id(api_url, pet_id=111222)
+    @allure.title('Delete pet in the store')
+    @allure.story('Delete pet')
+    @allure.tag('web')
+    @allure.severity(Severity.CRITICAL)
+    @allure.label('owner', 'Denis')
+    def test_delete_pet_from_store(self, api_url):
+        new_pet = create_new_pet(api_url, pet_name='Lily')
 
-    with allure.step('Проверка, что API возвращает код статуса 404.'):
-        assert response.status_code == 404
-    with allure.step('Проверка, что в ответе содержится сообщение "Pet not found".'):
-        assert response.json()['message'] == 'Pet not found'
-    validate_response_to_json_schema(json_schema='get_nonexistent_pet.json', response=response)
+        response, delete_pet_id = delete_pet(api_url, new_pet)
 
-
-@allure.title('Find all pets with status "pending"')
-@allure.story('Return pet')
-@allure.tag('web')
-@allure.severity(Severity.NORMAL)
-@allure.label('owner', 'Denis')
-def test_find_all_pets_with_pending_status(self, api_url):
-    response = get_pet_by_status(api_url, status='pending')
-
-    with allure.step('Проверка, что API возвращает код статуса 200.'):
-        assert response.status_code == 200
-    with allure.step('Проверка, что статус первого питомца в ответе - "pending".'):
-        assert response.json()[0]['status'] == 'pending'
-
-
-@allure.title('Delete pet in the store')
-@allure.story('Delete pet')
-@allure.tag('web')
-@allure.severity(Severity.CRITICAL)
-@allure.label('owner', 'Denis')
-def test_delete_pet_from_store(self, api_url):
-    new_pet = create_new_pet(api_url, pet_name='Lily')
-
-    response, delete_pet_id = delete_pet(api_url, new_pet)
-
-    with allure.step('Проверка, что API возвращает код статуса 200.'):
-        assert response.status_code == 200
-    with allure.step('Проверка, поле "message" в ответе содержит id удаленного питомца.'):
-        assert response.json()['message'] == str(delete_pet_id)
-    validate_response_to_json_schema(json_schema='delete_pet.json', response=response)
+        with allure.step('Проверка, что API возвращает код статуса 200.'):
+            assert response.status_code == 200
+        with allure.step('Проверка, поле "message" в ответе содержит id удаленного питомца.'):
+            assert response.json()['message'] == str(delete_pet_id)
+        validate_response_to_json_schema(json_schema='delete_pet.json', response=response)
