@@ -32,7 +32,7 @@ class TestPet:
 @allure.story('Return pet')
 @allure.tag('web')
 @allure.severity(Severity.CRITICAL)
-@allure.label('owner', 'zmamedov')
+@allure.label('owner', 'Denis')
 def test_find_pet_by_id(self, api_url):
     new_pet = create_new_pet(api_url, pet_name='Miky')
 
@@ -49,7 +49,7 @@ def test_find_pet_by_id(self, api_url):
 @allure.story('Return pet')
 @allure.tag('web')
 @allure.severity(Severity.NORMAL)
-@allure.label('owner', 'zmamedov')
+@allure.label('owner', 'Denis')
 def test_dont_find_pet_by_id(self, api_url):
     response = get_nonexistent_pet_by_id(api_url, pet_id=111222)
 
@@ -64,7 +64,7 @@ def test_dont_find_pet_by_id(self, api_url):
 @allure.story('Return pet')
 @allure.tag('web')
 @allure.severity(Severity.NORMAL)
-@allure.label('owner', 'zmamedov')
+@allure.label('owner', 'Denis')
 def test_find_all_pets_with_pending_status(self, api_url):
     response = get_pet_by_status(api_url, status='pending')
 
@@ -78,7 +78,7 @@ def test_find_all_pets_with_pending_status(self, api_url):
 @allure.story('Delete pet')
 @allure.tag('web')
 @allure.severity(Severity.CRITICAL)
-@allure.label('owner', 'zmamedov')
+@allure.label('owner', 'Denis')
 def test_delete_pet_from_store(self, api_url):
     new_pet = create_new_pet(api_url, pet_name='Lily')
 
