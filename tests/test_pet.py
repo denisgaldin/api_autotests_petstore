@@ -15,7 +15,7 @@ class TestPet:
     @allure.story('Create pet')
     @allure.tag('web')
     @allure.severity(Severity.CRITICAL)
-    @allure.label('owner', 'zmamedov')
+    @allure.label('owner', 'Denis')
     def test_add_new_pet_to_store(self, api_url):
         new_pet = create_new_pet(api_url, pet_name='Spike')
 
