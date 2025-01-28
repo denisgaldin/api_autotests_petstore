@@ -25,3 +25,22 @@
 3. __Результат запуска сборки можно посмотреть в отчете Allure__
 
 <img width="1200" src="/pictures/jenkins_report.png">
+
+---
+
+## <img width="4%" title="Allure report"  src="/pictures/icons/allure_report.png"> Отчет в Allure report
+>__Просмотр результатов выполнения тестов в Allure report__
+<img width="1200" src="/pictures/allure_report_overview.png">
+
+>__Отчет позволяет получить общую информацию о прохождении тестов__
+> <img width="1200" src="/pictures/allure_report_suites_all.png">
+
+>__Отчет позволяет получить информацию о прохождении каждого теста__
+<img width="1200" src="/pictures/allure_report_suites_one_test.png">
+
+__Каждый тест содержит детальную информацию по всем шагам тестов, включая скриншоты страницы и видео прохождения теста.__
+
+### <img width="4%" title="Allure TestOps" src="/pictures/icons/allure_testops.svg"> Интеграция с Allure TestOps
+[Тест-кейсы](https://allure.autotests.cloud/launch/44144/tree/689780?treeId=0)
+
+<img width="1200" src="/pictures/allure_test_opts.png">
